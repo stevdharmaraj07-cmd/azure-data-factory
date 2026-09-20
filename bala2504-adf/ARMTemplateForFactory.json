@@ -1266,8 +1266,6 @@
 											"storeSettings": {
 												"type": "AzureBlobFSReadSettings",
 												"recursive": true,
-												"wildcardFolderPath": "@item().fileName",
-												"wildcardFileName": "*",
 												"enablePartitionDiscovery": false
 											},
 											"formatSettings": {
@@ -1293,7 +1291,12 @@
 										{
 											"referenceName": "crmcomplaintssource",
 											"type": "DatasetReference",
-											"parameters": {}
+											"parameters": {
+												"filename": {
+													"value": "@item().fileName",
+													"type": "Expression"
+												}
+											}
 										}
 									],
 									"outputs": [
@@ -1630,11 +1633,20 @@
 					"referenceName": "LinkserviceDL",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().filename",
+							"type": "Expression"
+						},
 						"folderPath": "csvfiles",
 						"fileSystem": "crmcomplaintssource"
 					},
