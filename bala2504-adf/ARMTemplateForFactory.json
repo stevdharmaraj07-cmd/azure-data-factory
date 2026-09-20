@@ -1278,6 +1278,20 @@
 											"sqlWriterUseTableLock": false
 										},
 										"enableStaging": false,
+										"enableSkipIncompatibleRow": true,
+										"logSettings": {
+											"enableCopyActivityLog": true,
+											"copyActivityLogSettings": {
+												"logLevel": "Warning",
+												"enableReliableLogging": false
+											},
+											"logLocationSettings": {
+												"linkedServiceName": {
+													"referenceName": "LinkserviceDL",
+													"type": "LinkedServiceReference"
+												}
+											}
+										},
 										"translator": {
 											"type": "TabularTranslator",
 											"typeConversion": true,
@@ -1308,6 +1322,44 @@
 											}
 										}
 									]
+								},
+								{
+									"name": "Delete1",
+									"type": "Delete",
+									"dependsOn": [
+										{
+											"activity": "Copy_CSV_To_Bronze_Staging",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "crmcomplaintssource",
+											"type": "DatasetReference",
+											"parameters": {
+												"filename": {
+													"value": "@item().fileName",
+													"type": "Expression"
+												}
+											}
+										},
+										"enableLogging": false,
+										"storeSettings": {
+											"type": "AzureBlobFSReadSettings",
+											"recursive": true,
+											"enablePartitionDiscovery": false
+										}
+									}
 								}
 							]
 						}
@@ -1382,7 +1434,8 @@
 				"[concat(variables('factoryId'), '/datasets/CRMIngestionPipelineSource')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]",
 				"[concat(variables('factoryId'), '/datasets/crmcomplaintssource')]",
-				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]"
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/linkedServices/LinkserviceDL')]"
 			]
 		},
 		{
