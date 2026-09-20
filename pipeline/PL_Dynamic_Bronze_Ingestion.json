@@ -31,6 +31,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -112,7 +113,8 @@
 										"linkedServiceName": {
 											"referenceName": "LinkserviceDL",
 											"type": "LinkedServiceReference"
-										}
+										},
+										"path": "crmcomplaintssource/csvfiles/errorlogs"
 									}
 								},
 								"translator": {
@@ -182,6 +184,39 @@
 									"recursive": true,
 									"enablePartitionDiscovery": false
 								}
+							}
+						},
+						{
+							"name": "Log_Bronze_Copy_Error",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "Copy_CSV_To_Bronze_Staging",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "AzureSqlDatabase1",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": "INSERT INTO stg_bronze_error (\n    PipelineRunID,\n    EntityName,\n    SourceFileName,\n    TargetTableName,\n    ErrorMessage\n)\nVALUES (\n    '@{pipeline().RunId}',\n    '@{item().fileName}',\n    '@{item().fileName}',\n    '@{item().tableName}',\n    '@{replace(activity('Copy_CSV_To_Bronze_Staging').error.message, '''', '''''')}'\n);"
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
 							}
 						}
 					]
