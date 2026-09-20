@@ -16,7 +16,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@dataset().para_files_name",
+					"value": "@dataset().delete_file",
 					"type": "Expression"
 				},
 				"folderPath": "csvfiles",
