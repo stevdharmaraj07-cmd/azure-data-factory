@@ -605,6 +605,38 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/deletefile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LinkserviceDL",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"delete_file": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().delete_file",
+							"type": "Expression"
+						},
+						"folderPath": "csvfiles",
+						"fileSystem": "crmsource"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LinkserviceDL')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Extract_pipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -713,83 +745,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Extract_source')]",
 				"[concat(variables('factoryId'), '/datasets/Extract_destination')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/VarPipeline')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Metadata1",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "metadatads",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobFSReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "StoreFiles",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "var_files",
-							"value": {
-								"value": "@activity('Get Metadata1').output.childItems",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"variables": {
-					"var_files": {
-						"type": "Array"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2026-09-18T12:07:34Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/metadatads')]"
 			]
 		}
 	]

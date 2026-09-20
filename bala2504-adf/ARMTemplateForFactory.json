@@ -1331,7 +1331,7 @@
 									]
 								},
 								{
-									"name": "Delete1",
+									"name": "Delete_Source_file",
 									"type": "Delete",
 									"dependsOn": [
 										{
@@ -1351,9 +1351,14 @@
 									"userProperties": [],
 									"typeProperties": {
 										"dataset": {
-											"referenceName": "CRMIngestionPipelineSource",
+											"referenceName": "deletefile",
 											"type": "DatasetReference",
-											"parameters": {}
+											"parameters": {
+												"delete_file": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
+											}
 										},
 										"enableLogging": false,
 										"storeSettings": {
@@ -1375,7 +1380,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/CRMIngestionPipelineSource')]",
 				"[concat(variables('factoryId'), '/datasets/param_crm_source')]",
-				"[concat(variables('factoryId'), '/datasets/CRMIngestionPipelineDest')]"
+				"[concat(variables('factoryId'), '/datasets/CRMIngestionPipelineDest')]",
+				"[concat(variables('factoryId'), '/datasets/deletefile')]"
 			]
 		},
 		{
@@ -1614,6 +1620,38 @@
 					"quoteChar": "\""
 				},
 				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LinkserviceDL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/deletefile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LinkserviceDL",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"delete_file": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().delete_file",
+							"type": "Expression"
+						},
+						"folderPath": "csvfiles",
+						"fileSystem": "crmsource"
+					}
+				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/LinkserviceDL')]"
