@@ -89,8 +89,6 @@
 									"storeSettings": {
 										"type": "AzureBlobFSReadSettings",
 										"recursive": true,
-										"wildcardFolderPath": "@item().fileName",
-										"wildcardFileName": "*",
 										"enablePartitionDiscovery": false
 									},
 									"formatSettings": {
@@ -115,7 +113,13 @@
 							"inputs": [
 								{
 									"referenceName": "crmcomplaintssource",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"filename": {
+											"value": "@item().fileName",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
