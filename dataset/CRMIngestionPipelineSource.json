@@ -1,0 +1,60 @@
+{
+	"name": "CRMIngestionPipelineSource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LinkserviceDL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "csvfiles",
+				"fileSystem": "crmsource"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Record_ID",
+				"type": "String"
+			},
+			{
+				"name": "Stage_ID",
+				"type": "String"
+			},
+			{
+				"name": "Stage_Name",
+				"type": "String"
+			},
+			{
+				"name": "Component_Name",
+				"type": "String"
+			},
+			{
+				"name": "Execution_Timestamp",
+				"type": "String"
+			},
+			{
+				"name": "Pipeline_Status",
+				"type": "String"
+			},
+			{
+				"name": "Processed_Rows",
+				"type": "String"
+			},
+			{
+				"name": "Processing_Time_Sec",
+				"type": "String"
+			},
+			{
+				"name": "User_Knowledge_Level",
+				"type": "String"
+			}
+		]
+	}
+}
