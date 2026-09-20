@@ -1,0 +1,15 @@
+{
+	"name": "bala2504-adf",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c8ceddd0-be5f-41a6-ba5a-2034bd4cf523",
+		"tenantId": "5596ae4d-31a9-4f50-a910-2ae109ec5dce"
+	}
+}
