@@ -1,0 +1,27 @@
+{
+	"name": "deletefile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LinkserviceDL",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"delete_file": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().para_files_name",
+					"type": "Expression"
+				},
+				"folderPath": "csvfiles",
+				"fileSystem": "crmsource"
+			}
+		}
+	}
+}

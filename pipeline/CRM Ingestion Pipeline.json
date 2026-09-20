@@ -136,7 +136,7 @@
 							]
 						},
 						{
-							"name": "Delete1",
+							"name": "Delete_Source_file",
 							"type": "Delete",
 							"dependsOn": [
 								{
@@ -156,8 +156,14 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "CRMIngestionPipelineSource",
-									"type": "DatasetReference"
+									"referenceName": "deletefile",
+									"type": "DatasetReference",
+									"parameters": {
+										"delete_file": {
+											"value": "@item().name",
+											"type": "Expression"
+										}
+									}
 								},
 								"enableLogging": false,
 								"storeSettings": {
