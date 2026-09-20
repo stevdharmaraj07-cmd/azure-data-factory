@@ -149,7 +149,7 @@
 						"tableName": "stg_raw_aspect"
 					},
 					{
-						"fileName": "qa_raw_updated.csv",
+						"fileName": "qa_raw.csv",
 						"tableName": "stg_raw_qa"
 					},
 					{
