@@ -410,7 +410,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/CRMIngestionPipelineSource')]",
+			"name": "[concat(parameters('factoryName'), '/FilesIngest')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -423,9 +423,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "modern_data_architecture_10000_records.csv",
-						"folderPath": "csvfiles",
-						"fileSystem": "crmsource"
+						"folderPath": "csvoutfiles",
+						"fileSystem": "crmdestination"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -452,8 +451,147 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": "csvoutfiles",
-						"fileSystem": "crmdestination"
+						"folderPath": "csvfiles",
+						"fileSystem": "crmsource"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Record_ID",
+						"type": "String"
+					},
+					{
+						"name": "Stage_ID",
+						"type": "String"
+					},
+					{
+						"name": "Stage_Name",
+						"type": "String"
+					},
+					{
+						"name": "Component_Name",
+						"type": "String"
+					},
+					{
+						"name": "Execution_Timestamp",
+						"type": "String"
+					},
+					{
+						"name": "Pipeline_Status",
+						"type": "String"
+					},
+					{
+						"name": "Processed_Rows",
+						"type": "String"
+					},
+					{
+						"name": "Processing_Time_Sec",
+						"type": "String"
+					},
+					{
+						"name": "User_Knowledge_Level",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LinkserviceDL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CRMIngestionPipelineSource')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LinkserviceDL",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "csvfiles",
+						"fileSystem": "crmsource"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Record_ID",
+						"type": "String"
+					},
+					{
+						"name": "Stage_ID",
+						"type": "String"
+					},
+					{
+						"name": "Stage_Name",
+						"type": "String"
+					},
+					{
+						"name": "Component_Name",
+						"type": "String"
+					},
+					{
+						"name": "Execution_Timestamp",
+						"type": "String"
+					},
+					{
+						"name": "Pipeline_Status",
+						"type": "String"
+					},
+					{
+						"name": "Processed_Rows",
+						"type": "String"
+					},
+					{
+						"name": "Processing_Time_Sec",
+						"type": "String"
+					},
+					{
+						"name": "User_Knowledge_Level",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/LinkserviceDL')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/param_crm_source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LinkserviceDL",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"para_files_name": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().para_files_name",
+							"type": "Expression"
+						},
+						"folderPath": "csvfiles",
+						"fileSystem": "crmsource"
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -652,216 +790,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/metadatads')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_git_csv')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy data1",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "HttpReadSettings",
-									"requestMethod": "GET"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "git_linked_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "sinkgit_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2026-09-18T11:45:27Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/git_linked_csv')]",
-				"[concat(variables('factoryId'), '/datasets/sinkgit_csv')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_manager')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "CopyCSV",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Validation1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "csv_source",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "sink_csv",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Delete1",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "CopyCSV",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "csv_source",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"enableLogging": false,
-							"storeSettings": {
-								"type": "AzureBlobFSReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							}
-						}
-					},
-					{
-						"name": "Validation1",
-						"type": "Validation",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "csv_source",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"timeout": "0.12:00:00",
-							"sleep": 10
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2026-09-19T01:34:34Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/csv_source')]",
-				"[concat(variables('factoryId'), '/datasets/sink_csv')]"
 			]
 		}
 	]
