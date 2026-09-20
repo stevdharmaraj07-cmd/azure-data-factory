@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "csvfiles",
-				"fileSystem": "crmsource"
+				"folderPath": "csvoutputfiles",
+				"fileSystem": "crmdestination"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
