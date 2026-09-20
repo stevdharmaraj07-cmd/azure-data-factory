@@ -1,5 +1,5 @@
 {
-	"name": "CRM Ingestion Pipeline",
+	"name": "PL_Dynamic_Bronze_Ingestion",
 	"properties": {
 		"activities": [
 			{
@@ -66,13 +66,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Get Metadata1').output.childItems",
+						"value": "@pipeline().parameters.SourceTargetMapping",
 						"type": "Expression"
 					},
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "Copy_CSV_To_Bronze_Staging",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -89,6 +89,8 @@
 									"storeSettings": {
 										"type": "AzureBlobFSReadSettings",
 										"recursive": true,
+										"wildcardFolderPath": "@item().fileName",
+										"wildcardFileName": "*",
 										"enablePartitionDiscovery": false
 									},
 									"formatSettings": {
@@ -96,15 +98,9 @@
 									}
 								},
 								"sink": {
-									"type": "DelimitedTextSink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
-									},
-									"formatSettings": {
-										"type": "DelimitedTextWriteSettings",
-										"quoteAllText": true,
-										"fileExtension": ".txt"
-									}
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
 								},
 								"enableStaging": false,
 								"translator": {
@@ -118,65 +114,51 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "param_crm_source",
-									"type": "DatasetReference",
-									"parameters": {
-										"para_files_name": {
-											"value": "@item().name",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "crmcomplaintssource",
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "CRMIngestionPipelineDest",
-									"type": "DatasetReference"
-								}
-							]
-						},
-						{
-							"name": "Delete_Source_file",
-							"type": "Delete",
-							"dependsOn": [
-								{
-									"activity": "Copy data1",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"dataset": {
-									"referenceName": "deletefile",
+									"referenceName": "AzureSqlTable1",
 									"type": "DatasetReference",
 									"parameters": {
-										"delete_file": {
-											"value": "@item().name",
-											"type": "Expression"
-										}
+										"TargetTable": "@item().tableName"
 									}
-								},
-								"enableLogging": false,
-								"storeSettings": {
-									"type": "AzureBlobFSReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
 								}
-							}
+							]
 						}
 					]
 				}
 			}
 		],
+		"parameters": {
+			"SourceTargetMapping": {
+				"type": "array",
+				"defaultValue": [
+					{
+						"fileName": "case_raw.csv",
+						"tableName": "stg_raw_case"
+					},
+					{
+						"fileName": "aspect_raw.csv",
+						"tableName": "stg_raw_aspect"
+					},
+					{
+						"fileName": "qa_raw_updated.csv",
+						"tableName": "stg_raw_qa"
+					},
+					{
+						"fileName": "content_raw.csv",
+						"tableName": "stg_raw_content"
+					},
+					{
+						"fileName": "cost_raw.csv",
+						"tableName": "stg_raw_cost"
+					}
+				]
+			}
+		},
 		"annotations": []
 	}
 }
