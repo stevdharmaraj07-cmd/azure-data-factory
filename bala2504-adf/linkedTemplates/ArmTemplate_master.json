@@ -11,6 +11,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'LinkserviceDL'"
 		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "azureserver25.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "free-sql-db-6811146"
+		},
 		"Linked_git_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://raw.githubusercontent.com/"
@@ -22,14 +30,6 @@
 		"ManTrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/a7f2992d-83e1-48ab-b817-ffc6d3b0f05e/resourceGroups/RG_ADF_Course/providers/Microsoft.Storage/storageAccounts/storageadfsteve"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "azureserver25.database.windows.net"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "free-sql-db-6811146"
 		},
 		"containerUri": {
 			"type": "string",
@@ -61,17 +61,17 @@
 					"LinkserviceDL_accountKey": {
 						"value": "[parameters('LinkserviceDL_accountKey')]"
 					},
-					"Linked_git_properties_typeProperties_url": {
-						"value": "[parameters('Linked_git_properties_typeProperties_url')]"
-					},
-					"LinkserviceDL_properties_typeProperties_url": {
-						"value": "[parameters('LinkserviceDL_properties_typeProperties_url')]"
-					},
 					"AzureSqlDatabase1_properties_typeProperties_server": {
 						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_server')]"
 					},
 					"AzureSqlDatabase1_properties_typeProperties_database": {
 						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_database')]"
+					},
+					"Linked_git_properties_typeProperties_url": {
+						"value": "[parameters('Linked_git_properties_typeProperties_url')]"
+					},
+					"LinkserviceDL_properties_typeProperties_url": {
+						"value": "[parameters('LinkserviceDL_properties_typeProperties_url')]"
 					}
 				}
 			},

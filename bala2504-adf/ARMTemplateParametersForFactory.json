@@ -8,6 +8,12 @@
 		"LinkserviceDL_accountKey": {
 			"value": ""
 		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "azureserver25.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "free-sql-db-6811146"
+		},
 		"Linked_git_properties_typeProperties_url": {
 			"value": "https://raw.githubusercontent.com/"
 		},
@@ -16,12 +22,6 @@
 		},
 		"ManTrigger_properties_typeProperties_scope": {
 			"value": "/subscriptions/a7f2992d-83e1-48ab-b817-ffc6d3b0f05e/resourceGroups/RG_ADF_Course/providers/Microsoft.Storage/storageAccounts/storageadfsteve"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_server": {
-			"value": "azureserver25.database.windows.net"
-		},
-		"AzureSqlDatabase1_properties_typeProperties_database": {
-			"value": "free-sql-db-6811146"
 		}
 	}
 }
