@@ -1,5 +1,5 @@
 {
-	"name": "pipeline2",
+	"name": "PL_Gold_DW_Load_Pipeline",
 	"properties": {
 		"activities": [
 			{
