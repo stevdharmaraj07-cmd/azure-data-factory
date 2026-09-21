@@ -519,7 +519,7 @@
 				},
 				"parameters": {
 					"SourceTargetMapping": {
-						"type": "array",
+						"type": "string",
 						"defaultValue": [
 							{
 								"fileName": "case_raw.csv",
