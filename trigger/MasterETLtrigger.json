@@ -1,0 +1,24 @@
+{
+	"name": "MasterETLtrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "PL_Master_ETL_Orchestrator",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/crmcomplaintssource/blobs/csvfiles/",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/a7f2992d-83e1-48ab-b817-ffc6d3b0f05e/resourceGroups/RG_ADF_Course/providers/Microsoft.Storage/storageAccounts/storageadfsteve",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
