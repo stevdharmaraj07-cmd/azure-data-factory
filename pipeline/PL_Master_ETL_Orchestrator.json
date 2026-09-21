@@ -14,13 +14,7 @@
 						"referenceName": "PL_Dynamic_Bronze_Ingestion",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"SourceTargetMapping": {
-							"value": "@pipeline().parameters.SourceTargetMapping",
-							"type": "Expression"
-						}
-					}
+					"waitOnCompletion": true
 				}
 			},
 			{
