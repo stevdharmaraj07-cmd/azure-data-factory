@@ -17,7 +17,10 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"SourceTargetMapping": "[{\"fileName\":\"case_raw.csv\",\"tableName\":\"stg_raw_case\"},{\"fileName\":\"aspect_raw.csv\",\"tableName\":\"stg_raw_aspect\"},{\"fileName\":\"qa_raw.csv\",\"tableName\":\"stg_raw_qa\"},{\"fileName\":\"content_raw.csv\",\"tableName\":\"stg_raw_content\"},{\"fileName\":\"cost_raw.csv\",\"tableName\":\"stg_raw_cost\"}]"
+						"SourceTargetMapping": {
+							"value": "[{\"fileName\":\"case_raw.csv\",\"tableName\":\"stg_raw_case\"},{\"fileName\":\"aspect_raw.csv\",\"tableName\":\"stg_raw_aspect\"},{\"fileName\":\"qa_raw.csv\",\"tableName\":\"stg_raw_qa\"},{\"fileName\":\"content_raw.csv\",\"tableName\":\"stg_raw_content\"},{\"fileName\":\"cost_raw.csv\",\"tableName\":\"stg_raw_cost\"}]",
+							"type": "Expression"
+						}
 					}
 				}
 			},
