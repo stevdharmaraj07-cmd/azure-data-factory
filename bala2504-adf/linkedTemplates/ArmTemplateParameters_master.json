@@ -23,6 +23,9 @@
 		"ManTrigger_properties_typeProperties_scope": {
 			"value": "/subscriptions/a7f2992d-83e1-48ab-b817-ffc6d3b0f05e/resourceGroups/RG_ADF_Course/providers/Microsoft.Storage/storageAccounts/storageadfsteve"
 		},
+		"MasterETLtrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/a7f2992d-83e1-48ab-b817-ffc6d3b0f05e/resourceGroups/RG_ADF_Course/providers/Microsoft.Storage/storageAccounts/storageadfsteve"
+		},
 		"containerUri": {
 			"value": ""
 		},

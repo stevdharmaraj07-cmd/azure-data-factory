@@ -31,6 +31,10 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/a7f2992d-83e1-48ab-b817-ffc6d3b0f05e/resourceGroups/RG_ADF_Course/providers/Microsoft.Storage/storageAccounts/storageadfsteve"
 		},
+		"MasterETLtrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a7f2992d-83e1-48ab-b817-ffc6d3b0f05e/resourceGroups/RG_ADF_Course/providers/Microsoft.Storage/storageAccounts/storageadfsteve"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -90,6 +94,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"MasterETLtrigger_properties_typeProperties_scope": {
+						"value": "[parameters('MasterETLtrigger_properties_typeProperties_scope')]"
 					},
 					"ManTrigger_properties_typeProperties_scope": {
 						"value": "[parameters('ManTrigger_properties_typeProperties_scope')]"
