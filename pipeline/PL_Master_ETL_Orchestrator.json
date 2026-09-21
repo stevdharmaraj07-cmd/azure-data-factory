@@ -87,33 +87,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"SourceTargetMapping": {
-				"type": "array",
-				"defaultValue": [
-					{
-						"fileName": "case_raw.csv",
-						"tableName": "stg_raw_case"
-					},
-					{
-						"fileName": "aspect_raw.csv",
-						"tableName": "stg_raw_aspect"
-					},
-					{
-						"fileName": "qa_raw_updated.csv",
-						"tableName": "stg_raw_qa"
-					},
-					{
-						"fileName": "content_raw.csv",
-						"tableName": "stg_raw_content"
-					},
-					{
-						"fileName": "cost_raw.csv",
-						"tableName": "stg_raw_cost"
-					}
-				]
-			}
-		},
 		"annotations": []
 	}
 }
