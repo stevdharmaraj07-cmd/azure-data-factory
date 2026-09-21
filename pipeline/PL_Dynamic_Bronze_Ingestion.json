@@ -95,7 +95,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"filename": {
-											"value": "@activity('Getcrmsource').output.childItems",
+											"value": "@item().fileName",
 											"type": "Expression"
 										}
 									}
