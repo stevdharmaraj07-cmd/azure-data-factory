@@ -9,13 +9,18 @@
 				"policy": {
 					"secureInput": false
 				},
-				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "PL_Dynamic_Bronze_Ingestion",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"SourceTargetMapping": {
+							"value": "@pipeline().parameters.SourceTargetMapping",
+							"type": "Expression"
+						}
+					}
 				}
 			},
 			{
