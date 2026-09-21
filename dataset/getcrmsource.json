@@ -1,0 +1,23 @@
+{
+	"name": "getcrmsource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LinkserviceDL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "csvfiles",
+				"fileSystem": "crmcomplaintssource"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

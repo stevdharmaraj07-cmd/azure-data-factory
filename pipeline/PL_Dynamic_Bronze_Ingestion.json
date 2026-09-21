@@ -30,7 +30,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@pipeline().parameters.SourceTargetMapping",
+						"value": "@activity('Getcrmsource').output.childItems activity('Script2').output",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -95,7 +95,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"filename": {
-											"value": "@item().fileName",
+											"value": "@activity('Getcrmsource').output.childItems",
 											"type": "Expression"
 										}
 									}
@@ -106,7 +106,10 @@
 									"referenceName": "AzureSqlTable1",
 									"type": "DatasetReference",
 									"parameters": {
-										"TargetTable": "@item().tableName"
+										"TargetTable": {
+											"value": "@activity('Script2').output",
+											"type": "Expression"
+										}
 									}
 								}
 							]
@@ -193,7 +196,7 @@
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Validation1",
+						"activity": "Script2",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -220,35 +223,77 @@
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
+			},
+			{
+				"name": "Getcrmsource",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "Validation1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "getcrmsource",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "Script2",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Getcrmsource",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "SELECT * FROM sys.tables\nWHERE name LIKE 'stg_raw%'"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
 			}
 		],
-		"parameters": {
-			"SourceTargetMapping": {
-				"type": "array",
-				"defaultValue": [
-					{
-						"fileName": "case_raw.csv",
-						"tableName": "stg_raw_case"
-					},
-					{
-						"fileName": "aspect_raw.csv",
-						"tableName": "stg_raw_aspect"
-					},
-					{
-						"fileName": "qa_raw_updated.csv",
-						"tableName": "stg_raw_qa"
-					},
-					{
-						"fileName": "content_raw.csv",
-						"tableName": "stg_raw_content"
-					},
-					{
-						"fileName": "cost_raw.csv",
-						"tableName": "stg_raw_cost"
-					}
-				]
-			}
-		},
 		"annotations": []
 	}
 }
