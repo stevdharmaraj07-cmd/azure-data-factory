@@ -47,7 +47,7 @@
 								},
 								"ifTrueActivities": [
 									{
-										"name": "Copy_CSV_To_Bronze_Staging_copy1",
+										"name": "Copy_CSV_To_Bronze_Staging",
 										"type": "Copy",
 										"dependsOn": [],
 										"policy": {
@@ -130,7 +130,7 @@
 										"type": "Delete",
 										"dependsOn": [
 											{
-												"activity": "Copy_CSV_To_Bronze_Staging_copy1",
+												"activity": "Copy_CSV_To_Bronze_Staging",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -168,7 +168,7 @@
 										"type": "Script",
 										"dependsOn": [
 											{
-												"activity": "Copy_CSV_To_Bronze_Staging_copy1",
+												"activity": "Copy_CSV_To_Bronze_Staging",
 												"dependencyConditions": [
 													"Failed"
 												]
