@@ -48,7 +48,10 @@
 				"inputs": [
 					{
 						"referenceName": "ds_onprem",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"p_filename": "hi"
+						}
 					}
 				],
 				"outputs": [
@@ -57,6 +60,12 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": []
 			}
 		],
 		"annotations": []
