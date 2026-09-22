@@ -1,0 +1,21 @@
+{
+	"name": "onpremfiles",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_onpremFile",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
