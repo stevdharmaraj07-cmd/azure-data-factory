@@ -810,28 +810,11 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Execute PL_Dynamic_Bronze_Ingestion",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"policy": {
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PL_Dynamic_Bronze_Ingestion",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
 						"name": "Execute PL_Silver_Layer_Transformation",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Execute PL_Dynamic_Bronze_Ingestion",
+								"activity": "Execute Pipeline1",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -897,6 +880,23 @@
 							"waitOnCompletion": true,
 							"parameters": {}
 						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_Dynamic_Bronze_Ingestion",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"policy": {
@@ -905,10 +905,10 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/PL_Dynamic_Bronze_Ingestion')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_Silver_Layer_Transformation')]",
 				"[concat(variables('factoryId'), '/pipelines/PL_Gold_DW_Load_Pipeline')]",
-				"[concat(variables('factoryId'), '/pipelines/PL_mart_layer')]"
+				"[concat(variables('factoryId'), '/pipelines/PL_mart_layer')]",
+				"[concat(variables('factoryId'), '/pipelines/PL_Dynamic_Bronze_Ingestion')]"
 			]
 		},
 		{

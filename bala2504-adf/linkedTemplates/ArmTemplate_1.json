@@ -1258,28 +1258,11 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Execute PL_Dynamic_Bronze_Ingestion",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"policy": {
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PL_Dynamic_Bronze_Ingestion",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
 						"name": "Execute PL_Silver_Layer_Transformation",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "Execute PL_Dynamic_Bronze_Ingestion",
+								"activity": "Execute Pipeline1",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1340,6 +1323,23 @@
 						"typeProperties": {
 							"pipeline": {
 								"referenceName": "PL_mart_layer",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PL_Dynamic_Bronze_Ingestion",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
