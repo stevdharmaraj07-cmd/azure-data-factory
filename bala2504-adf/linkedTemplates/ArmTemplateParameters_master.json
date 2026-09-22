@@ -8,10 +8,10 @@
 		"LinkserviceDL_accountKey": {
 			"value": ""
 		},
-		"ls_onpremFile_password": {
+		"ls_datalake_accountKey": {
 			"value": ""
 		},
-		"ls_datalake_accountKey": {
+		"ls_onpremFile_password": {
 			"value": ""
 		},
 		"AzureSqlDatabase1_properties_typeProperties_server": {
@@ -26,8 +26,8 @@
 		"LinkserviceDL_properties_typeProperties_url": {
 			"value": "https://storageadfsteve.dfs.core.windows.net/"
 		},
-		"ManTrigger_properties_typeProperties_scope": {
-			"value": "/subscriptions/a7f2992d-83e1-48ab-b817-ffc6d3b0f05e/resourceGroups/RG_ADF_Course/providers/Microsoft.Storage/storageAccounts/storageadfsteve"
+		"ls_datalake_properties_typeProperties_url": {
+			"value": "https://storageadfsteve.dfs.core.windows.net/"
 		},
 		"ls_onpremFile_properties_typeProperties_host": {
 			"value": "D:\\Stevfiles"
@@ -35,8 +35,8 @@
 		"ls_onpremFile_properties_typeProperties_userId": {
 			"value": "desktop-2crp10s\\admin"
 		},
-		"ls_datalake_properties_typeProperties_url": {
-			"value": "https://storageadfsteve.dfs.core.windows.net/"
+		"ManTrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/a7f2992d-83e1-48ab-b817-ffc6d3b0f05e/resourceGroups/RG_ADF_Course/providers/Microsoft.Storage/storageAccounts/storageadfsteve"
 		},
 		"containerUri": {
 			"value": ""
