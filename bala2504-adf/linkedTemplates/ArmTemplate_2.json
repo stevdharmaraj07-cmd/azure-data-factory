@@ -450,12 +450,14 @@
 											}
 										},
 										"sink": {
-											"type": "ParquetSink",
+											"type": "DelimitedTextSink",
 											"storeSettings": {
 												"type": "AzureBlobFSWriteSettings"
 											},
 											"formatSettings": {
-												"type": "ParquetWriteSettings"
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
 											}
 										},
 										"enableStaging": false,
@@ -482,14 +484,9 @@
 									],
 									"outputs": [
 										{
-											"referenceName": "ds_onpremfile",
+											"referenceName": "ds_onpremfiles",
 											"type": "DatasetReference",
-											"parameters": {
-												"p_filename": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
+											"parameters": {}
 										}
 									]
 								}

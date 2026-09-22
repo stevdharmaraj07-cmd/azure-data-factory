@@ -1334,12 +1334,14 @@
 											}
 										},
 										"sink": {
-											"type": "ParquetSink",
+											"type": "DelimitedTextSink",
 											"storeSettings": {
 												"type": "AzureBlobFSWriteSettings"
 											},
 											"formatSettings": {
-												"type": "ParquetWriteSettings"
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
 											}
 										},
 										"enableStaging": false,
@@ -1366,14 +1368,9 @@
 									],
 									"outputs": [
 										{
-											"referenceName": "ds_onpremfile",
+											"referenceName": "ds_onpremfiles",
 											"type": "DatasetReference",
-											"parameters": {
-												"p_filename": {
-													"value": "@item().name",
-													"type": "Expression"
-												}
-											}
+											"parameters": {}
 										}
 									]
 								}
@@ -1420,7 +1417,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/onpremfiles')]",
 				"[concat(variables('factoryId'), '/datasets/ds_onprem')]",
-				"[concat(variables('factoryId'), '/datasets/ds_onpremfile')]"
+				"[concat(variables('factoryId'), '/datasets/ds_onpremfiles')]"
 			]
 		},
 		{
@@ -2171,7 +2168,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ds_onpremfile')]",
+			"name": "[concat(parameters('factoryName'), '/ds_onpremfiles')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -2179,24 +2176,18 @@
 					"referenceName": "ls_datalake",
 					"type": "LinkedServiceReference"
 				},
-				"parameters": {
-					"p_filename": {
-						"type": "string"
-					}
-				},
 				"annotations": [],
-				"type": "Parquet",
+				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().p_filename",
-							"type": "Expression"
-						},
 						"folderPath": "onprem",
 						"fileSystem": "bronze"
 					},
-					"compressionCodec": "snappy"
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
 				},
 				"schema": []
 			},
