@@ -86,7 +86,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Get_Pipeline_JSON_Config",
+						"activity": "Set variable1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -95,7 +95,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@variables('SourceTargetMapping')",
+						"value": "@variables('V_SourceTargetMapping')",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -166,10 +166,37 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get_Pipeline_JSON_Config",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "V_SourceTargetMapping",
+					"value": {
+						"value": "@activity('Get_Pipeline_JSON_Config').output.firstRow.json_data",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
 			"SourceTargetMapping": {
+				"type": "String"
+			},
+			"V_SourceTargetMapping": {
 				"type": "String"
 			}
 		},
