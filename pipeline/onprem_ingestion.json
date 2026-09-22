@@ -57,7 +57,10 @@
 				"outputs": [
 					{
 						"referenceName": "ds_onpremfile",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"p_filename": "hi"
+						}
 					}
 				]
 			}
