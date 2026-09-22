@@ -9,6 +9,7 @@
 				"policy": {
 					"secureInput": false
 				},
+				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "PL_Dynamic_Bronze_Ingestion",

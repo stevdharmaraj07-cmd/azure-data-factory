@@ -17,200 +17,11 @@
 				}
 			},
 			{
-				"name": "ForEach1",
-				"type": "ForEach",
-				"dependsOn": [
-					{
-						"activity": "Script1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('Getcrmsource').output.childItems\n",
-						"type": "Expression"
-					},
-					"isSequential": true,
-					"activities": [
-						{
-							"name": "If Condition1",
-							"type": "IfCondition",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"expression": {
-									"value": "@equals(activity('Getcrmsource').output.childItems, activity('Script2').output)",
-									"type": "Expression"
-								},
-								"ifTrueActivities": [
-									{
-										"name": "Copy_CSV_To_Bronze_Staging",
-										"type": "Copy",
-										"dependsOn": [],
-										"policy": {
-											"timeout": "0.12:00:00",
-											"retry": 0,
-											"retryIntervalInSeconds": 30,
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"source": {
-												"type": "DelimitedTextSource",
-												"storeSettings": {
-													"type": "AzureBlobFSReadSettings",
-													"recursive": true,
-													"enablePartitionDiscovery": false
-												},
-												"formatSettings": {
-													"type": "DelimitedTextReadSettings"
-												}
-											},
-											"sink": {
-												"type": "AzureSqlSink",
-												"writeBehavior": "insert",
-												"sqlWriterUseTableLock": false
-											},
-											"enableStaging": false,
-											"enableSkipIncompatibleRow": true,
-											"logSettings": {
-												"enableCopyActivityLog": true,
-												"copyActivityLogSettings": {
-													"logLevel": "Warning",
-													"enableReliableLogging": false
-												},
-												"logLocationSettings": {
-													"linkedServiceName": {
-														"referenceName": "LinkserviceDL",
-														"type": "LinkedServiceReference"
-													},
-													"path": "crmcomplaintssource/csvfiles/errorlogs"
-												}
-											},
-											"translator": {
-												"type": "TabularTranslator",
-												"typeConversion": true,
-												"typeConversionSettings": {
-													"allowDataTruncation": true,
-													"treatBooleanAsNumber": false
-												}
-											}
-										},
-										"inputs": [
-											{
-												"referenceName": "crmcomplaintssource",
-												"type": "DatasetReference",
-												"parameters": {
-													"filename": {
-														"value": "@item().name",
-														"type": "Expression"
-													}
-												}
-											}
-										],
-										"outputs": [
-											{
-												"referenceName": "AzureSqlTable1",
-												"type": "DatasetReference",
-												"parameters": {
-													"TargetTable": {
-														"value": "@activity('Script2').output",
-														"type": "Expression"
-													}
-												}
-											}
-										]
-									},
-									{
-										"name": "Delete1",
-										"type": "Delete",
-										"dependsOn": [
-											{
-												"activity": "Copy_CSV_To_Bronze_Staging",
-												"dependencyConditions": [
-													"Succeeded"
-												]
-											}
-										],
-										"policy": {
-											"timeout": "0.12:00:00",
-											"retry": 0,
-											"retryIntervalInSeconds": 30,
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"dataset": {
-												"referenceName": "crmcomplaintssource",
-												"type": "DatasetReference",
-												"parameters": {
-													"filename": {
-														"value": "@item().fileName",
-														"type": "Expression"
-													}
-												}
-											},
-											"enableLogging": false,
-											"storeSettings": {
-												"type": "AzureBlobFSReadSettings",
-												"recursive": true,
-												"enablePartitionDiscovery": false
-											}
-										}
-									},
-									{
-										"name": "Log_Bronze_Copy_Error",
-										"type": "Script",
-										"dependsOn": [
-											{
-												"activity": "Copy_CSV_To_Bronze_Staging",
-												"dependencyConditions": [
-													"Failed"
-												]
-											}
-										],
-										"policy": {
-											"timeout": "0.12:00:00",
-											"retry": 0,
-											"retryIntervalInSeconds": 30,
-											"secureOutput": false,
-											"secureInput": false
-										},
-										"userProperties": [],
-										"linkedServiceName": {
-											"referenceName": "AzureSqlDatabase1",
-											"type": "LinkedServiceReference"
-										},
-										"typeProperties": {
-											"scripts": [
-												{
-													"type": "Query",
-													"text": {
-														"value": "INSERT INTO stg_bronze_error (\n    PipelineRunID,\n    EntityName,\n    SourceFileName,\n    TargetTableName,\n    ErrorMessage\n)\nVALUES (\n    '@{pipeline().RunId}',\n    '@{item().name}',\n    '@{item().name}',\n    '@{item().tableName}',\n    '@{replace(activity('Copy_CSV_To_Bronze_Staging').error.message, '''', '''''')}'\n);",
-														"type": "Expression"
-													}
-												}
-											],
-											"scriptBlockExecutionTimeout": "02:00:00"
-										}
-									}
-								]
-							}
-						}
-					]
-				}
-			},
-			{
 				"name": "Script1",
 				"type": "Script",
 				"dependsOn": [
 					{
-						"activity": "Script2",
+						"activity": "Validation1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -239,11 +50,11 @@
 				}
 			},
 			{
-				"name": "Getcrmsource",
-				"type": "GetMetadata",
+				"name": "Get_Pipeline_JSON_Config",
+				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "Validation1",
+						"activity": "Script1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -258,53 +69,16 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT json_data \nFROM JSON_Attributes \nWHERE pipeline_name = '@{pipeline().Pipeline}'",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
 					"dataset": {
-						"referenceName": "getcrmsource",
+						"referenceName": "AzureSqlTable1",
 						"type": "DatasetReference"
-					},
-					"fieldList": [
-						"childItems"
-					],
-					"storeSettings": {
-						"type": "AzureBlobFSReadSettings",
-						"enablePartitionDiscovery": false
-					},
-					"formatSettings": {
-						"type": "DelimitedTextReadSettings"
 					}
-				}
-			},
-			{
-				"name": "Script2",
-				"type": "Script",
-				"dependsOn": [
-					{
-						"activity": "Getcrmsource",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabase1",
-					"type": "LinkedServiceReference"
-				},
-				"typeProperties": {
-					"scripts": [
-						{
-							"type": "Query",
-							"text": "SELECT * FROM sys.tables\nWHERE name LIKE 'stg_raw%'"
-						}
-					],
-					"scriptBlockExecutionTimeout": "02:00:00"
 				}
 			}
 		],
