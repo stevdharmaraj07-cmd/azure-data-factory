@@ -71,7 +71,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT json_data \nFROM JSON_Attributes \nWHERE pipeline_name = '@{pipeline().Pipeline}'",
+						"sqlReaderQuery": {
+							"value": "SELECT json_data \nFROM JSON_Attributes \nWHERE pipeline_name = '@{pipeline().Pipeline}'",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
