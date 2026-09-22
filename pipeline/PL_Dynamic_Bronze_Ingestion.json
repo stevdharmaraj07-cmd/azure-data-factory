@@ -95,13 +95,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@variables('V_SourceTargetMapping')",
+						"value": "@variables('SourceTargetMapping')",
 						"type": "Expression"
 					},
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Copy data1",
+							"name": "Copy_CSV_To_Bronze_Staging",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -163,6 +163,74 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "Delete1",
+							"type": "Delete",
+							"dependsOn": [
+								{
+									"activity": "Copy_CSV_To_Bronze_Staging",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataset": {
+									"referenceName": "crmcomplaintssource",
+									"type": "DatasetReference",
+									"parameters": {
+										"filename": "@item().fileName"
+									}
+								},
+								"enableLogging": false,
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								}
+							}
+						},
+						{
+							"name": "Redirecting to error table",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "Copy_CSV_To_Bronze_Staging",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "AzureSqlDatabase1",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": "INSERT INTO stg_bronze_error (\n    PipelineRunID,\n    EntityName,\n    SourceFileName,\n    TargetTableName,\n    ErrorMessage\n)\nVALUES (\n    '@{pipeline().RunId}',\n    '@{item().fileName}',\n    '@{item().fileName}',\n    '@{item().tableName}',\n    '@{replace(activity('Copy_CSV_To_Bronze_Staging').error.message, '''', '''''')}'\n);"
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
 						}
 					]
 				}
@@ -184,9 +252,9 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "V_SourceTargetMapping",
+					"variableName": "SourceTargetMapping",
 					"value": {
-						"value": "@activity('Get_Pipeline_JSON_Config').output.firstRow.json_data",
+						"value": "@json(activity('Get_Pipeline_JSON_Config').output.firstRow.json_data)",
 						"type": "Expression"
 					}
 				}
@@ -194,10 +262,7 @@
 		],
 		"variables": {
 			"SourceTargetMapping": {
-				"type": "String"
-			},
-			"V_SourceTargetMapping": {
-				"type": "String"
+				"type": "Array"
 			}
 		},
 		"annotations": []
