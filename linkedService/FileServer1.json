@@ -1,0 +1,17 @@
+{
+	"name": "FileServer1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "D:\\Stevfiles",
+			"userId": "desktop-2crp10s\\admin",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI5ZGIyNTk5Yi1iMWJmLTRiZjEtYWQwYi01MDg0NzQyY2YyODgiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "Stephen-SelfHosted",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
