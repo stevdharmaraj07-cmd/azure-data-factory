@@ -1357,7 +1357,10 @@
 											"referenceName": "ds_onprem",
 											"type": "DatasetReference",
 											"parameters": {
-												"p_filename": "hi"
+												"p_filename": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
 											}
 										}
 									],
@@ -1366,7 +1369,10 @@
 											"referenceName": "ds_onpremfile",
 											"type": "DatasetReference",
 											"parameters": {
-												"p_filename": "hi"
+												"p_filename": {
+													"value": "@item().name",
+													"type": "Expression"
+												}
 											}
 										}
 									]
