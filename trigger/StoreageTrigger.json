@@ -14,6 +14,7 @@
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/crmcomplaintssource/blobs/csvfiles/",
+			"blobPathEndsWith": ".csv",
 			"ignoreEmptyBlobs": true,
 			"scope": "/subscriptions/a7f2992d-83e1-48ab-b817-ffc6d3b0f05e/resourceGroups/RG_ADF_Course/providers/Microsoft.Storage/storageAccounts/storageadfsteve",
 			"events": [
