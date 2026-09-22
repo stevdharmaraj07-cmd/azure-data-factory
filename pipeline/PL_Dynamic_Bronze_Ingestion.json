@@ -71,20 +71,22 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "SELECT json_data \nFROM JSON_Attributes \nWHERE pipeline_name = '@{pipeline().Pipeline}'",
-							"type": "Expression"
-						},
+						"sqlReaderQuery": "SELECT json_data \nFROM JSON_Attributes \nWHERE pipeline_name = '@{pipeline().Pipeline}'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "AzureSqlTable1",
+						"referenceName": "AzureSqlTable2",
 						"type": "DatasetReference"
 					}
 				}
 			}
 		],
+		"variables": {
+			"SourceTargetMapping": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
