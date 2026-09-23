@@ -58,7 +58,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "SQLtoDatalaje",
+						"referenceName": "SQLtoDatalake",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
