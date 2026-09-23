@@ -1,0 +1,70 @@
+{
+	"name": "Parent_Pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "ExecuteOnPrem",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "onprem_ingestion",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "ExecuteAPI",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ExecuteOnPrem",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "API_ingestion",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "ExecuteIncremental",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "ExecuteAPI",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "SQLtoDatalaje",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": []
+	}
+}
