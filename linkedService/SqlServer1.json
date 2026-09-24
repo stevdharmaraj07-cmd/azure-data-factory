@@ -6,7 +6,7 @@
 		"type": "SqlServer",
 		"typeProperties": {
 			"server": "DESKTOP-2CRP10S",
-			"database": "HR",
+			"database": "Adf_database",
 			"encrypt": "True",
 			"trustServerCertificate": true,
 			"authenticationType": "SQL",
@@ -14,7 +14,7 @@
 			"pooling": "False",
 			"multipleActiveResultSets": "False",
 			"commandTimeout": "0",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI3NjI3YTRiMS04MmFiLTQ1MWYtOTg3ZS02MDBjNjk5MmRkNWMiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIwMTczOGQzMy0yODRmLTQxODEtOGMyZC1hZDQwNmIyZTI0ZmIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
 		},
 		"connectVia": {
 			"referenceName": "Stephen-SelfHosted",
