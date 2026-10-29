@@ -1,0 +1,15 @@
+{
+	"name": "azureendtoend25-adf",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "0251e9a1-504c-4d94-9dbe-3532b2e82452",
+		"tenantId": "5596ae4d-31a9-4f50-a910-2ae109ec5dce"
+	}
+}
